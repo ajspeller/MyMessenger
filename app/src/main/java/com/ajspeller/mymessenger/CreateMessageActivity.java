@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 
 public class CreateMessageActivity extends Activity {
 
@@ -14,7 +15,22 @@ public class CreateMessageActivity extends Activity {
     }
 
     public void onSendMessage(View view) {
-        Intent intent = new Intent(this, ReceiceMessageActivity.class);
-        startActivity(intent);
+        EditText messageView = findViewById(R.id.message);
+        String messageText = messageView.getText().toString();
+
+        // Explicit Intent
+        //Intent intent = new Intent(this, ReceiceMessageActivity.class);
+        //intent.putExtra("message", messageText);
+
+        // Implicit Intent
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject text from activity 1");
+        intent.putExtra(Intent.EXTRA_TEXT, messageText);
+
+        String chooserTitle = getString(R.string.chooser);
+        Intent chosenIntent = Intent.createChooser(intent, chooserTitle);
+
+        startActivity(chosenIntent);
     }
 }
